@@ -1,8 +1,11 @@
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
-    Alert, KeyboardAvoidingView, Platform, ScrollView,
+    Alert,
+    Image,
+    KeyboardAvoidingView, Platform, ScrollView,
     StyleSheet, Text,
     TextInput,
     TouchableOpacity,
@@ -16,7 +19,7 @@ export default function ProfileScreen() {
   const currentUserId = params.id;
 
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false); // <--- New State for Edit Mode
+  const [isEditing, setIsEditing] = useState(false);
 
   // Form State
   const [username, setUsername] = useState("");
@@ -25,6 +28,7 @@ export default function ProfileScreen() {
   const [rank, setRank] = useState("");
   const [role, setRole] = useState("");
   const [gameName, setGameName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProfile();
@@ -41,9 +45,91 @@ export default function ProfileScreen() {
         setRank(data.rank_tier);
         setRole(data.role);
         setGameName(data.game_name);
+        
+        if (data.avatar) {
+            setAvatarUrl(data.avatar);
+        }
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 1. Pick Image (Crash-proof version)
+  const handlePickAvatar = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission Required", "You need to allow access to photos to change your avatar.");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images, // Safe legacy mode
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (pickerResult.canceled) {
+      return;
+    }
+
+    const localUri = pickerResult.assets[0].uri;
+    uploadAvatar(localUri);
+  };
+
+  // 2. Upload Image (Using FETCH to fix Network Error)
+  const uploadAvatar = async (uri: string) => {
+    // A. Fix URI for Android
+    let uriToUpload = uri;
+    if (Platform.OS === 'android' && !uri.startsWith('file://')) {
+        uriToUpload = `file://${uri}`;
+    }
+
+    // B. Get File Type
+    const uriParts = uriToUpload.split('.');
+    const fileType = uriParts[uriParts.length - 1];
+    
+    // C. Create FormData
+    const formData = new FormData();
+    formData.append('user_id', currentUserId as string);
+    formData.append('avatar', {
+      uri: uriToUpload,
+      name: `photo.${fileType}`,
+      type: `image/${fileType === 'png' ? 'png' : 'jpeg'}`,
+    } as any);
+
+    try {
+      setLoading(true);
+      console.log("Uploading via fetch...");
+
+      // D. Use Native Fetch (More reliable for uploads)
+      const uploadUrl = `${api.defaults.baseURL}/upload_avatar.php`;
+      
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const result = await response.json();
+      console.log("Upload Response:", result);
+
+      if (result.status === 200) {
+        setAvatarUrl(result.avatar_url); 
+        Alert.alert("Success", "Profile picture updated!");
+      } else {
+        Alert.alert("Upload Failed", result.message || "Server error");
+      }
+
+    } catch (error) {
+      console.error("Upload Error Details:", error);
+      Alert.alert("Error", "Could not upload image. Check server log.");
     } finally {
       setLoading(false);
     }
@@ -61,7 +147,7 @@ export default function ProfileScreen() {
 
       if (response.data.status === 200) {
         Alert.alert("Success", "Profile updated!");
-        setIsEditing(false); // Turn off edit mode
+        setIsEditing(false);
       } else {
         Alert.alert("Error", "Could not update profile.");
       }
@@ -91,7 +177,6 @@ export default function ProfileScreen() {
       style={{flex: 1}}
     >
       <ScrollView style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>My Profile</Text>
           <TouchableOpacity onPress={() => router.back()}>
@@ -100,16 +185,24 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.content}>
-          {/* Avatar Section */}
           <View style={styles.avatarContainer}>
-               <View style={styles.avatar}>
-                  <Text style={styles.avatarText}>{username?.[0]}</Text>
-               </View>
-               <Text style={styles.username}>{username}</Text>
-               <Text style={styles.email}>{email}</Text>
+             <TouchableOpacity onPress={handlePickAvatar} style={styles.avatarWrapper}>
+                 {avatarUrl ? (
+                     <Image source={{ uri: avatarUrl }} style={styles.avatarImage} />
+                 ) : (
+                     <View style={styles.avatarPlaceholder}>
+                        <Text style={styles.avatarText}>{username?.[0]}</Text>
+                     </View>
+                 )}
+                 <View style={styles.editIconBadge}>
+                    <Text style={styles.editIconText}>📷</Text>
+                 </View>
+             </TouchableOpacity>
+
+             <Text style={styles.username}>{username}</Text>
+             <Text style={styles.email}>{email}</Text>
           </View>
 
-          {/* Stats Card (Editable) */}
           <View style={styles.statsCard}>
               <View style={styles.statItem}>
                   <Text style={styles.statLabel}>Game</Text>
@@ -145,7 +238,6 @@ export default function ProfileScreen() {
               </View>
           </View>
 
-          {/* Bio Section (Editable) */}
           <View style={styles.section}>
               <Text style={styles.sectionTitle}>About Me</Text>
               {isEditing ? (
@@ -161,7 +253,6 @@ export default function ProfileScreen() {
               )}
           </View>
 
-          {/* Action Buttons */}
           {isEditing ? (
              <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
                 <Text style={styles.btnText}>Save Changes</Text>
@@ -196,11 +287,21 @@ const styles = StyleSheet.create({
   content: { padding: 20 },
   
   avatarContainer: { alignItems: 'center', marginBottom: 30 },
-  avatar: { 
+  avatarWrapper: { marginBottom: 15, position: 'relative' },
+  avatarImage: { width: 100, height: 100, borderRadius: 50 },
+  avatarPlaceholder: { 
     width: 100, height: 100, borderRadius: 50, backgroundColor: '#ddd', 
-    justifyContent: 'center', alignItems: 'center', marginBottom: 15 
+    justifyContent: 'center', alignItems: 'center'
   },
   avatarText: { fontSize: 40, fontWeight: 'bold', color: '#555' },
+  
+  editIconBadge: {
+    position: 'absolute', bottom: 0, right: 0, 
+    backgroundColor: '#007AFF', width: 30, height: 30, borderRadius: 15,
+    justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#fff'
+  },
+  editIconText: { fontSize: 14 },
+
   username: { fontSize: 26, fontWeight: 'bold', color: '#333' },
   email: { fontSize: 16, color: '#888' },
 
