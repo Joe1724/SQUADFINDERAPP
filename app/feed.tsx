@@ -83,11 +83,22 @@ export default function FeedScreen() {
     );
   }
 
+  // SCREEN: NO MORE PLAYERS
   if (!users || currentIndex >= users.length) {
     return (
       <View style={styles.container}>
         <View style={styles.topBar}>
+            {/* PROFILE BUTTON (Left) */}
+            <TouchableOpacity 
+              onPress={() => router.push({ pathname: '/profile', params: { id: currentUserId } })}
+              style={styles.profileBtn}
+            >
+              <Text style={styles.btnIcon}>👤</Text>
+            </TouchableOpacity>
+
             <Text style={styles.header}>SquadFinder</Text>
+            
+            {/* SQUADS BUTTON (Right) */}
             <TouchableOpacity 
               onPress={() => router.push({ pathname: '/matches', params: { id: currentUserId } })}
               style={styles.matchesBtn}
@@ -108,11 +119,20 @@ export default function FeedScreen() {
 
   const currentUser = users[currentIndex];
 
+  // SCREEN: FEED CARD
   return (
     <View style={styles.container}>
-      {/* <--- NEW HEADER WITH BUTTON ---> */}
       <View style={styles.topBar}>
+        {/* <--- ADDED PROFILE BUTTON HERE ---> */}
+        <TouchableOpacity 
+          onPress={() => router.push({ pathname: '/profile', params: { id: currentUserId } })}
+          style={styles.profileBtn}
+        >
+          <Text style={styles.btnIcon}>👤</Text>
+        </TouchableOpacity>
+
         <Text style={styles.header}>SquadFinder</Text>
+        
         <TouchableOpacity 
           onPress={() => router.push({ pathname: '/matches', params: { id: currentUserId } })}
           style={styles.matchesBtn}
@@ -162,7 +182,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 60,
   },
-  // <--- NEW STYLES START --->
   topBar: {
     width: '100%',
     flexDirection: 'row',
@@ -170,6 +189,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
+  },
+  // <--- NEW STYLES FOR PROFILE BTN --->
+  profileBtn: {
+    padding: 10,
+    backgroundColor: '#e1e1e1',
+    borderRadius: 20,
+    marginRight: 10
+  },
+  btnIcon: { 
+    fontSize: 18 
   },
   matchesBtn: {
     paddingVertical: 8,
@@ -182,9 +211,8 @@ const styles = StyleSheet.create({
     color: '#333',
     fontSize: 14,
   },
-  // <--- NEW STYLES END --->
   header: {
-    fontSize: 28,
+    fontSize: 24, // Slightly smaller to fit 3 items
     fontWeight: 'bold',
     color: '#333',
   },
