@@ -1,4 +1,4 @@
-# SquadFinder - Thesis Project (Mobile App)
+# SquadFinder - (Mobile App)
 
 A cross-platform mobile application designed to help **League of Legends** and **Valorant** players find compatible teammates. This app uses real-time matchmaking based on Riot API data to verify skill levels and ensure high-quality matches.
 
