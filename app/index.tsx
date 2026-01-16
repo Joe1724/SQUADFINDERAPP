@@ -1,10 +1,12 @@
-import { useRouter } from 'expo-router'; // <--- 1. ADD THIS IMPORT
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import api from '../src/config/api';
 
 export default function LoginScreen() {
-  const router = useRouter(); // <--- 2. ADD THIS LINE
+  const router = useRouter(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,10 +27,37 @@ export default function LoginScreen() {
 
       console.log("API Response:", response.data);
 
-     if (response.data.status === 200) {
-   const realId = response.data.user.id;
-   router.replace({ pathname: '/feed', params: { id: realId } });
-}
+      if (response.data.status === 200) {
+        const realId = response.data.user.id;
+
+        // <--- START: NEW PUSH NOTIFICATION LOGIC --->
+        if (Device.isDevice) {
+            try {
+                // <--- FIXED: Hardcoded Project ID to prevent crash --->
+                const projectId = "1fdbf5fa-a04f-44a7-8537-bc4ac069961e";
+                
+                const tokenData = await Notifications.getExpoPushTokenAsync({
+                    projectId: projectId
+                });
+                const pushToken = tokenData.data;
+                
+                // Save it to your database
+                console.log("Saving Push Token:", pushToken);
+                await api.post('/save_token.php', {
+                    user_id: realId,
+                    token: pushToken
+                });
+            } catch (error) {
+                console.log("Error getting/saving push token:", error);
+                // We don't stop login if this fails, just log it
+            }
+        }
+        // <--- END: NEW PUSH NOTIFICATION LOGIC --->
+
+        router.replace({ pathname: '/feed', params: { id: realId } });
+      } else {
+        Alert.alert('Login Failed', response.data.message || 'Invalid credentials');
+      }
 
     } catch (error: any) {
       console.error(error);
@@ -38,7 +67,6 @@ export default function LoginScreen() {
     }
   };
 
-  // ... (The rest of your Return/Styles code stays exactly the same)
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
