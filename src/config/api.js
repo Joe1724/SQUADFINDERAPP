@@ -4,7 +4,7 @@ import axios from 'axios';
 // If using Android Emulator, you can typically use '10.0.2.2'
 // If using Physical Device, use '192.168.1.X' (Your Laptop IP) 192.168.254.195
 
-const BASE_URL = 'http://192.168.254.195/squadfinder/api'; 
+const BASE_URL = 'http://10.0.2.2/squadfinder/api'; 
 
 const api = axios.create({
   baseURL: BASE_URL,

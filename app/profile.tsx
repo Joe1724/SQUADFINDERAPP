@@ -276,70 +276,73 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8f9fa' },
+  container: { flex: 1, backgroundColor: '#0f1419' },
   header: { 
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingTop: 60, paddingHorizontal: 20, paddingBottom: 20, backgroundColor: '#fff' 
+    paddingTop: 60, paddingHorizontal: 20, paddingBottom: 20, backgroundColor: '#1a1f2e',
+    borderBottomWidth: 2, borderBottomColor: '#252b3b',
   },
-  headerTitle: { fontSize: 24, fontWeight: 'bold' },
-  closeText: { color: '#007AFF', fontSize: 16 },
+  headerTitle: { fontSize: 24, fontWeight: '900', color: '#fff', letterSpacing: 1 },
+  closeText: { color: '#8b5cf6', fontSize: 16, fontWeight: '700' },
   
   content: { padding: 20 },
   
   avatarContainer: { alignItems: 'center', marginBottom: 30 },
   avatarWrapper: { marginBottom: 15, position: 'relative' },
-  avatarImage: { width: 100, height: 100, borderRadius: 50 },
+  avatarImage: { width: 110, height: 110, borderRadius: 55, borderWidth: 4, borderColor: '#8b5cf6' },
   avatarPlaceholder: { 
-    width: 100, height: 100, borderRadius: 50, backgroundColor: '#ddd', 
-    justifyContent: 'center', alignItems: 'center'
+    width: 110, height: 110, borderRadius: 55, backgroundColor: '#8b5cf6', 
+    justifyContent: 'center', alignItems: 'center', borderWidth: 4, borderColor: '#a78bfa'
   },
-  avatarText: { fontSize: 40, fontWeight: 'bold', color: '#555' },
+  avatarText: { fontSize: 45, fontWeight: 'bold', color: '#fff' },
   
   editIconBadge: {
     position: 'absolute', bottom: 0, right: 0, 
-    backgroundColor: '#007AFF', width: 30, height: 30, borderRadius: 15,
-    justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#fff'
+    backgroundColor: '#8b5cf6', width: 34, height: 34, borderRadius: 17,
+    justifyContent: 'center', alignItems: 'center', borderWidth: 3, borderColor: '#0f1419',
   },
-  editIconText: { fontSize: 14 },
+  editIconText: { fontSize: 16 },
 
-  username: { fontSize: 26, fontWeight: 'bold', color: '#333' },
-  email: { fontSize: 16, color: '#888' },
+  username: { fontSize: 26, fontWeight: '900', color: '#fff' },
+  email: { fontSize: 14, color: '#9ca3af', fontWeight: '600', marginTop: 4 },
 
   statsCard: { 
-    flexDirection: 'row', backgroundColor: '#fff', borderRadius: 15, padding: 20, 
-    justifyContent: 'space-between', marginBottom: 30, elevation: 2 
+    flexDirection: 'row', backgroundColor: '#1a1f2e', borderRadius: 16, padding: 20, 
+    justifyContent: 'space-between', marginBottom: 30,
+    borderWidth: 2, borderColor: '#252b3b',
   },
   statItem: { alignItems: 'center', flex: 1 },
-  statLabel: { fontSize: 12, color: '#888', textTransform: 'uppercase', marginBottom: 5 },
-  statValue: { fontSize: 16, fontWeight: 'bold', color: '#007AFF', textAlign: 'center' },
+  statLabel: { fontSize: 11, color: '#9ca3af', textTransform: 'uppercase', marginBottom: 8, fontWeight: '700', letterSpacing: 0.5 },
+  statValue: { fontSize: 16, fontWeight: '800', color: '#8b5cf6', textAlign: 'center' },
 
   inputSmall: { 
-    borderBottomWidth: 1, borderBottomColor: '#007AFF', width: '80%', 
-    textAlign: 'center', fontSize: 16, padding: 2 
+    borderBottomWidth: 2, borderBottomColor: '#8b5cf6', width: '80%', 
+    textAlign: 'center', fontSize: 16, padding: 4, color: '#8b5cf6', fontWeight: '700'
   },
   inputBio: {
-    backgroundColor: '#fff', borderRadius: 10, padding: 15, height: 100,
-    textAlignVertical: 'top', fontSize: 16, color: '#333'
+    backgroundColor: '#252b3b', borderRadius: 12, padding: 15, height: 100,
+    textAlignVertical: 'top', fontSize: 15, color: '#fff'
   },
 
   section: { marginBottom: 30 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#444' },
-  bioText: { fontSize: 16, color: '#666', fontStyle: 'italic', lineHeight: 24 },
+  sectionTitle: { fontSize: 17, fontWeight: '800', marginBottom: 12, color: '#fff', letterSpacing: 0.5 },
+  bioText: { fontSize: 15, color: '#d1d5db', fontStyle: 'italic', lineHeight: 24, backgroundColor: '#1a1f2e', padding: 16, borderRadius: 12, borderWidth: 2, borderColor: '#252b3b' },
 
   editBtn: { 
-    backgroundColor: '#fff', borderWidth: 1, borderColor: '#007AFF', 
-    padding: 15, borderRadius: 12, alignItems: 'center', marginBottom: 15 
+    backgroundColor: '#1a1f2e', borderWidth: 2, borderColor: '#8b5cf6', 
+    padding: 16, borderRadius: 12, alignItems: 'center', marginBottom: 15
   },
-  editText: { color: '#007AFF', fontWeight: 'bold', fontSize: 16 },
+  editText: { color: '#8b5cf6', fontWeight: '800', fontSize: 15, letterSpacing: 0.5 },
 
   saveBtn: { 
-    backgroundColor: '#007AFF', padding: 15, borderRadius: 12, 
-    alignItems: 'center', marginBottom: 15 
+    backgroundColor: '#8b5cf6', padding: 16, borderRadius: 12, 
+    alignItems: 'center', marginBottom: 15
   },
-  btnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  btnText: { color: '#fff', fontWeight: '800', fontSize: 15, letterSpacing: 0.5 },
 
   logoutBtn: { 
-    backgroundColor: '#ff4d4d', padding: 15, borderRadius: 12, alignItems: 'center' 
+    backgroundColor: '#1a1f2e', padding: 16, borderRadius: 12, alignItems: 'center',
+    borderWidth: 2, borderColor: '#ef4444'
   },
-  logoutText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
+  logoutText: { color: '#ef4444', fontWeight: '800', fontSize: 15, letterSpacing: 0.5 }
 });

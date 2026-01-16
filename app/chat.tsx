@@ -132,48 +132,74 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f4f4f4' },
+  container: { flex: 1, backgroundColor: '#0f1419' },
   header: { 
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', 
-    padding: 15, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ddd',
-    paddingTop: Platform.OS === 'android' ? 40 : 15 
+    padding: 15, backgroundColor: '#1a1f2e', borderBottomWidth: 2, borderBottomColor: '#252b3b',
+    paddingTop: Platform.OS === 'android' ? 40 : 15,
   },
   backBtn: { padding: 5 },
-  backText: { fontSize: 16, color: '#007AFF' },
-  headerTitle: { fontSize: 18, fontWeight: 'bold' },
+  backText: { fontSize: 16, color: '#8b5cf6', fontWeight: '700' },
+  headerTitle: { 
+    fontSize: 18, 
+    fontWeight: '800', 
+    color: '#fff',
+    letterSpacing: 0.5,
+  },
   listContent: { padding: 15, paddingBottom: 20 },
   
   messageBubble: { 
-    maxWidth: '80%', padding: 12, borderRadius: 20, marginBottom: 10 
+    maxWidth: '75%', 
+    padding: 14, 
+    borderRadius: 18, 
+    marginBottom: 12,
   },
   myBubble: { 
-    alignSelf: 'flex-end', backgroundColor: '#007AFF', 
-    borderBottomRightRadius: 2 
+    alignSelf: 'flex-end', 
+    backgroundColor: '#8b5cf6', 
+    borderBottomRightRadius: 4,
   },
   theirBubble: { 
-    alignSelf: 'flex-start', backgroundColor: '#E5E5EA', 
-    borderBottomLeftRadius: 2 
+    alignSelf: 'flex-start', 
+    backgroundColor: '#1a1f2e', 
+    borderBottomLeftRadius: 4,
+    borderWidth: 2,
+    borderColor: '#252b3b',
   },
-  messageText: { fontSize: 16 },
+  messageText: { fontSize: 15, fontWeight: '500' },
   myText: { color: '#fff' },
-  theirText: { color: '#000' },
+  theirText: { color: '#fff' },
 
   inputContainer: { 
     flexDirection: 'row', 
-    padding: 10, 
-    backgroundColor: '#fff', 
+    padding: 12, 
+    backgroundColor: '#1a1f2e', 
     alignItems: 'center', 
-    borderTopWidth: 1, 
-    borderTopColor: '#ddd',
-    // <--- FIX START: Add padding to lift it above the nav bar --->
+    borderTopWidth: 2, 
+    borderTopColor: '#252b3b',
     paddingBottom: 30, 
-    marginBottom: 10
-    // <--- FIX END --->
+    marginBottom: 10,
   },
   input: { 
-    flex: 1, backgroundColor: '#f0f0f0', borderRadius: 20, 
-    paddingHorizontal: 15, paddingVertical: 10, fontSize: 16, marginRight: 10 
+    flex: 1, 
+    backgroundColor: '#252b3b', 
+    borderRadius: 25, 
+    paddingHorizontal: 18, 
+    paddingVertical: 12, 
+    fontSize: 15, 
+    marginRight: 10,
+    color: '#fff',
   },
-  sendBtn: { padding: 10 },
-  sendText: { color: '#007AFF', fontWeight: 'bold', fontSize: 16 }
+  sendBtn: { 
+    backgroundColor: '#8b5cf6',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+  },
+  sendText: { 
+    color: '#fff', 
+    fontWeight: '800', 
+    fontSize: 14,
+    letterSpacing: 0.5,
+  }
 });

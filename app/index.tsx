@@ -41,36 +41,42 @@ export default function LoginScreen() {
   // ... (The rest of your Return/Styles code stays exactly the same)
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SquadFinder</Text>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logoIcon}>🎮</Text>
+        <Text style={styles.title}>SQUADFINDER</Text>
+        <Text style={styles.subtitle}>Find Your Perfect Teammate</Text>
+      </View>
       
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        placeholderTextColor="#888"
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        placeholderTextColor="#888"
-      />
+      <View style={styles.formContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholderTextColor="#6b7280"
+        />
+        
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          placeholderTextColor="#6b7280"
+        />
 
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={handleLogin}
-        disabled={loading}
-      >
-        <Text style={styles.buttonText}>
-          {loading ? "Connecting..." : "Login"}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.button, loading && styles.buttonDisabled]} 
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "CONNECTING..." : "START PLAYING"}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -78,38 +84,64 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0f1419',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 30,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  logoIcon: {
+    fontSize: 70,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 40,
-    color: '#333',
+    fontSize: 42,
+    fontWeight: '900',
+    color: '#fff',
+    letterSpacing: 4,
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#9ca3af',
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+  formContainer: {
+    width: '100%',
   },
   input: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    height: 56,
+    backgroundColor: '#1a1f2e',
+    borderRadius: 14,
+    paddingHorizontal: 20,
+    marginBottom: 16,
     fontSize: 16,
+    color: '#fff',
+    borderWidth: 2,
+    borderColor: '#252b3b',
   },
   button: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
+    height: 56,
+    backgroundColor: '#8b5cf6',
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
+    elevation: 6,
+  },
+  buttonDisabled: {
+    opacity: 0.7,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 1.5,
   },
 });
